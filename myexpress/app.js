@@ -13,7 +13,9 @@ app.use(function(req, res, next) {
 	next();
 });
 
-app.set('view engine', 'pug');
+// app.set('view engine', 'pug');
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'))
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false }));
@@ -27,7 +29,11 @@ app.get('/', function(req, res) {
 	});
 });
 app.get('/about', function(req, res) {
-	res.send('About page!');
+	res.render('about');
+});
+
+app.get('/contact', function(req, res) {
+	res.render('contact');
 });
 
 app.listen(3000);
