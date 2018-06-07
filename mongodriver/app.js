@@ -8,20 +8,29 @@ MongoClient.connect(url, function(err, client) {
 		return console.dir(err);
 	}
 	console.log('Connected to mongodb');
-	/*InsertDocument(client, function(){
+	/*insertRecord(client, function(){
 		client.close();
 	});*/
-	/*InsertDocuments(client, function(){
+	/*insertRecords(client, function(){
 		client.close();
 	});*/
-	FindDocuments(client, function(){
+	/*findRecords(client, function(){
 		client.close();
-	});
+	});*/
+	/*queryRecords(client, function(){
+		client.close();
+	});*/
+	/*updateRecord(client, function(){
+		client.close();
+	});*/
+	/*removeRecord(client, function(){
+		client.close();
+	});*/
 
 });
 
 // Insert Single Doc
-const InsertDocument = function(client, callback) {
+const insertRecord = function(client, callback) {
 	var db = client.db('myproject');
 	////////////////////
 	// Get Collection //
@@ -35,7 +44,7 @@ const InsertDocument = function(client, callback) {
 		if(err) {
 			return console.dir(err);
 		}
-		console.log('Inserted document');
+		console.log('Inserted record');
 		console.log(result);
 		callback(result);
 	})
@@ -43,7 +52,7 @@ const InsertDocument = function(client, callback) {
 }
 
 // Insert Single Doc
-const InsertDocuments = function(client, callback) {
+const insertRecords = function(client, callback) {
 	var db = client.db('myproject');
 	////////////////////
 	// Get Collection //
@@ -63,13 +72,14 @@ const InsertDocuments = function(client, callback) {
 		if(err) {
 			return console.dir(err);
 		}
-		console.log('Inserted ' + result.ops.length + ' documents');
+		console.log('Inserted ' + result.ops.length + ' records');
 		callback(result);
 	})
 
 }
 
-const FindDocuments = function(client, callback) {
+// find record
+const findRecords = function(client, callback) {
 	var db = client.db('myproject');
 	const collection = db.collection('users');
 	collection.find({}).toArray(function(err, docs) {
@@ -79,4 +89,49 @@ const FindDocuments = function(client, callback) {
 		console.log('Fount the following records');
 		console.log(docs);
 	})
+}
+
+// query record
+const queryRecords = function(client, callback) {
+	var db = client.db('myproject');
+	const collection = db.collection('users');
+	collection.find({'name': 'Om Pandey'}).toArray(function(err, docs) {
+		if(err) {
+			return console.dir(err);
+		}
+		console.log('Fount the following records');
+		console.log(docs);
+	})
+
+}
+
+// Update record
+const updateRecord = function(client, callback) {
+	var db = client.db('myproject');
+	const collection = db.collection('users');
+	collection.updateOne({name: 'Om Pandey'},
+		{$set: {email: 'om@fullstack.com'}},
+		function(err, result){
+			if(err) {
+				return console.dir(err);
+			}
+			console.log('Updated Record');
+			callback(result);
+		})
+
+}
+
+// remove record
+const removeRecord = function(client, callback){
+	var db = client.db('myproject');
+	const collection = db.collection('users');
+	collection.deleteOne({name:'Om Pandey'}, function(err, result){
+		if(err) {
+			return console.dir(err);
+		}
+		console.log('Removed Document');
+		console.log(result);
+		callback();
+	});
+
 }
